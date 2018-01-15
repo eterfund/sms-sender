@@ -39,21 +39,22 @@ class SmsSender {
             if (!$response) {
                 $this->log('error', 'An error occurred while trying to send the sms: failed to get response from sms-sending server.');
                 $this->log('error', 'Request uri: ' . $requestURI);
-                throw new Exception('Failed to get response from sms-sending server');
+                throw new Exception('Failed to get response from sms-sending server. Curl error: ' . curl_error($curl));
             }
 
             $jsonResponse = json_decode($response);
             if (!$jsonResponse) {
                 $this->log('error', 'Invalid JSON returned from unisender API');
                 $this->log('error', 'Request uri: ' . $requestURI);
-                throw new Exception('Invalid JSON returned from unisender API');
+                throw new Exception('Invalid JSON returned from unisender API: ' . $response);
             }
 
             if (isset($jsonResponse->error)) {
-                $this->log('error', 'Unisender API returned an error code: ' . $jsonResponse->code);
+                $errMsg = 'Unisender API returned an error: ' . $jsonResponse->error . ', code: ' . $jsonResponse->code;
+                $this->log('error', $msg);
                 $this->log('error', 'Request uri: ' . $requestURI);
 
-                throw new Exception('Unisender API returned an error code: ' . $jsonResponse->code);
+                throw new Exception($errMsg);
             }
 
             if (isset($jsonResponse->warnings)) {
