@@ -64,6 +64,8 @@ class SmsSender {
                 }
                 $this->log('warning', 'Request uri: ' . $requestURI);
             }
+
+            return $jsonResponse->result->sms_id;
         }
     }
 
