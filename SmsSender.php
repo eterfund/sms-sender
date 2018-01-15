@@ -1,8 +1,9 @@
 <?php
 
-define('UNISENDER_API_BASE_URL', 'https://api.unisender.com/ru/api/sendSms');
 
 class SmsSender {
+    const UNISENDER_API_BASE_URL = 'https://api.unisender.com/ru/api/sendSms';
+
     private $apiKey;
     protected $logger;
 
@@ -70,7 +71,7 @@ class SmsSender {
     }
 
     protected function buildRequestURI ($phone, $sender, $msg) {
-        return UNISENDER_API_BASE_URL .
+        return self::UNISENDER_API_BASE_URL .
             '?format=json' . 
             '&api_key=' . $this->apiKey .
             '&phone=' . $phone .
