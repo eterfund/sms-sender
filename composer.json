@@ -1,0 +1,7 @@
+{
+  "name": "youngreaders/sms-sender",
+  "description": "Class for sending SMS messages",
+  "autoload": {
+    "files": ["SmsSender.php"]
+  }
+}
