@@ -52,7 +52,7 @@ class SmsSender {
 
             if (isset($jsonResponse->error)) {
                 $errMsg = 'Unisender API returned an error: ' . $jsonResponse->error . ', code: ' . $jsonResponse->code;
-                $this->log('error', $msg);
+                $this->log('error', $errMsg);
                 $this->log('error', 'Request uri: ' . $requestURI);
 
                 throw new Exception($errMsg);

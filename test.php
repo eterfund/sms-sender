@@ -2,13 +2,14 @@
 
 require_once 'SmsSender.php';
 
-$sender = new SmsSender(array(
-    'unisender_key' => '<key>',
-    'sender' => 'Test'
-));
+$sender = new SmsSender('<apiKey>');
 
 try {
-$sender->sendSMS('<number>', 'test');
+    $sender->sendSMS(array(
+        'phone' => '<receiver>', 
+        'sender' => '<sender name>',
+        'text' => '<message>'
+    ));
     echo 'ok';
 } catch (Exception $e) {
     echo $e;
