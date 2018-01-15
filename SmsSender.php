@@ -3,15 +3,19 @@
 define('UNISENDER_API_BASE_URL', 'https://api.unisender.com/ru/api/sendSms');
 
 class SmsSender {
-    public $config;
+    private $apiKey;
     protected $logger;
 
-    public function __construct ($config, $logger = null) {
-        $this->config = $config;
+    public function __construct ($apiKey, $logger = null) {
+        $this->apiKey = $apiKey;
         $this->logger = $logger;
     }
 
-    public function sendSMS ($to, $msg) {
+    public function sendSms ($params) {
+        $to = $params['phone'];
+        $sender = $params['sender'];
+        $text = $params['text'];
+
         if ($to) {
             $phone = preg_replace("#[^\d]#", "", $to);
             if (9000000000 <= $phone and $phone <= 9999999999) {
@@ -21,7 +25,7 @@ class SmsSender {
                 $phone = $phone - 10000000000;
             }
 
-            $requestURI = $this->buildRequestURI($phone, $msg);
+            $requestURI = $this->buildRequestURI($phone, $sender, $text);
 
             if ($curl = curl_init()) {
                 curl_setopt($curl, CURLOPT_URL, $requestURI);
@@ -62,12 +66,12 @@ class SmsSender {
         }
     }
 
-    protected function buildRequestURI ($phone, $msg) {
+    protected function buildRequestURI ($phone, $sender, $msg) {
         return UNISENDER_API_BASE_URL .
             '?format=json' . 
-            '&api_key=' . $this->config['unisender_key'] .
+            '&api_key=' . $this->apiKey .
             '&phone=' . $phone .
-            '&sender=' . $this->config['sender'] .
+            '&sender=' . $sender .
             '&text=' . urlencode($msg);
     }
 
